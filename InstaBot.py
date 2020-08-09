@@ -1,10 +1,13 @@
+#This code will scrape a given instagram username followers and stores it in an csv file
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 import pandas as pd
 
+#Before we continue make sure you have GoogleChrome install on your PC and also to it GoogleChrome dirve for the version of your Chrome
 
-
+#First we create a class. Since we can't access most of instagrame data without logging we have to create a class that will request our instagram username and password so it can login into our acctount so it can have access to the instagrame datas. And also a function that will takes in the arguement of the username of the person we want to scrape his username
 
 class InstagramBot():
 	def __init__(self,email,password):
@@ -14,7 +17,7 @@ class InstagramBot():
 		self.email = email
 		self.password = password
 
-	def signIn(self,username,max):
+	def signIn(self,username):
 		self.browser.get('https://www.instagram.com/accounts/login/')
 		time.sleep(5)
 		emailInput = self.browser.find_elements_by_css_selector('form input')[0]
@@ -28,8 +31,6 @@ class InstagramBot():
 		time.sleep(4)
 		self.browser.find_element_by_xpath("//button[contains(text(), 'Not Now')]").click()
 
-
-	# def getUserFollowers(self,username,max):
 		self.browser.get('https://www.instagram.com/' + username)
 		time.sleep(5)
 		followersLink = self.browser.find_element_by_css_selector('ul li a')
@@ -69,8 +70,10 @@ class InstagramBot():
 
 
 
-user = InstagramBot('akinfoyekup@gmail.com','tuesday..')
-f=user.signIn('elmagnificooriginality',30)
+user = InstagramBot('input your user name','input your password')
+
+f=user.signIn('the username of person you want to scrape his followers')
 
 df = pd.DataFrame(f,columns = ['User name'])
 print(df)
+df.to_csv('instaUsernames.csv',index=False)
